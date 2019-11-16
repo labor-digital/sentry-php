@@ -23,7 +23,6 @@ use Sentry\Breadcrumb;
 use Sentry\SentrySdk;
 use Sentry\Severity;
 use Sentry\State\Scope;
-use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 use function Sentry\init;
 
 class Sentry {
@@ -163,6 +162,7 @@ class Sentry {
 	 * Registers a global error and exception handler that is used to catch all not-cached exceptions
 	 */
 	public static function registerGlobalHandler() {
+		if (!static::isActivated()) return;
 		set_error_handler(function ($level, $message) {
 			if ($level) static::captureException(new \Exception($message, $level));
 		});
@@ -175,6 +175,7 @@ class Sentry {
 	 * Restores the global error and exception handlers
 	 */
 	public static function restoreGlobalHandler() {
+		if (!static::isActivated()) return;
 		restore_error_handler();
 		restore_exception_handler();
 	}
@@ -219,7 +220,7 @@ class Sentry {
 		
 		// Merge with possibly given config
 		$config = static::$sentryConfig;
-		if (is_array($autoConfig["sdk"]))
+		if (isset($autoConfig["sdk"]) && is_array($autoConfig["sdk"]))
 			foreach ($autoConfig["sdk"] as $k => $v)
 				if (!isset($config[$k])) $config[$k] = $v;
 		
