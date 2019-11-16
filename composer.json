@@ -20,9 +20,8 @@
 		"composer-plugin-api": "^1.1",
 		"sentry/sdk": "2.0.4"
 	},
-	"require-dev": {
-	},
-	"version": "1.0.0",
+	"require-dev": {},
+	"version": "1.1.0",
 	"extra": {
 		"class": "Labor\\Sentry\\Composer\\Plugin"
 	}
