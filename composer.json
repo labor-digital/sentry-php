@@ -1,0 +1,29 @@
+{
+	"name": "labor/sentry-php",
+	"description": "Sentry.io wrapper and integration in our internal build system",
+	"homepage": "https://www.labor.digital",
+	"type": "composer-plugin",
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "LABOR.digital",
+			"email": "info@labor.digital",
+			"homepage": "https://www.labor.digital"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Labor\\Sentry\\": "Classes"
+		}
+	},
+	"require": {
+		"composer-plugin-api": "^1.1",
+		"sentry/sdk": "2.0.4"
+	},
+	"require-dev": {
+	},
+	"version": "1.0.0",
+	"extra": {
+		"class": "Labor\\Sentry\\Composer\\Plugin"
+	}
+}
