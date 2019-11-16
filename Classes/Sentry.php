@@ -219,8 +219,9 @@ class Sentry {
 		
 		// Merge with possibly given config
 		$config = static::$sentryConfig;
-		if (isset($autoConfig["version"]) && !isset($config["release"])) $config["release"] = $autoConfig["version"];
-		if (isset($autoConfig["dsn"]) && !isset($config["dsn"])) $config["dsn"] = $autoConfig["dsn"];
+		if (is_array($autoConfig["sdk"]))
+			foreach ($autoConfig["sdk"] as $k => $v)
+				if (!isset($config[$k])) $config[$k] = $v;
 		
 		// Check if we got a dsn
 		if (!isset($config["dsn"])) return FALSE;
