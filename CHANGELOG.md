@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.3.0](https://bitbucket.org/labor-digital/labor-library-sentry-php/branches/compare/v1.3.0%0Dv1.2.0#diff) (2020-01-10)
+
+
+### Features
+
+* disable default integrations by default + update dependencies ([2f28a37](https://bitbucket.org/labor-digital/labor-library-sentry-php/commits/2f28a37))
+
+
+
 # [1.2.0](https://bitbucket.org/labor-digital/labor-library-sentry-php/branches/compare/v1.2.0%0Dv1.1.0#diff) (2019-11-16)
 
 
