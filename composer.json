@@ -17,8 +17,8 @@
 		}
 	},
 	"require": {
-		"composer-plugin-api": "^1.1",
-		"sentry/sdk": "2.0.4"
+		"composer-plugin-api": "1.1.0",
+		"sentry/sdk": "2.1.0"
 	},
 	"require-dev": {},
 	"version": "1.2.0",

@@ -227,6 +227,10 @@ class Sentry {
 		// Check if we got a dsn
 		if (!isset($config["dsn"])) return FALSE;
 		
+		// Disable default integrations
+		// Otherwise the global error handler will automatically be added to sentry
+		if (!isset($config["default_integrations"])) $config["default_integrations"] = FALSE;
+		
 		// Initialize sentry
 		init($config);
 		static::$isInitialized = TRUE;
