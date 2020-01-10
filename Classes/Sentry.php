@@ -20,6 +20,8 @@
 namespace Labor\Sentry;
 
 use Sentry\Breadcrumb;
+use Sentry\Integration\RequestIntegration;
+use Sentry\Integration\TransactionIntegration;
 use Sentry\SentrySdk;
 use Sentry\Severity;
 use Sentry\State\Scope;
@@ -229,7 +231,10 @@ class Sentry {
 		
 		// Disable default integrations
 		// Otherwise the global error handler will automatically be added to sentry
-		if (!isset($config["default_integrations"])) $config["default_integrations"] = FALSE;
+		if (!isset($config["default_integrations"])) $config["default_integrations"] = [
+			new RequestIntegration(),
+			new TransactionIntegration(),
+		];
 		
 		// Initialize sentry
 		init($config);
