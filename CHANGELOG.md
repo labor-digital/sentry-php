@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.2](https://bitbucket.org/labor-digital/labor-library-sentry-php/branches/compare/v1.3.2%0Dv1.3.1#diff) (2020-02-05)
+
+
+### Bug Fixes
+
+* fix the iunvalid configuration array that broke the error handling  ([be0e3bd](https://bitbucket.org/labor-digital/labor-library-sentry-php/commits/be0e3bd))
+
+
+
 ## [1.3.1](https://bitbucket.org/labor-digital/labor-library-sentry-php/branches/compare/v1.3.1%0Dv1.3.0#diff) (2020-01-10)
 
 
