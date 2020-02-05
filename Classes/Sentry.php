@@ -231,7 +231,8 @@ class Sentry {
 		
 		// Disable default integrations
 		// Otherwise the global error handler will automatically be added to sentry
-		if (!isset($config["default_integrations"])) $config["default_integrations"] = [
+		if (!isset($config["default_integrations"])) $config["default_integrations"] = false;
+		if (!isset($config["integrations"])) $config["integrations"] = [
 			new RequestIntegration(),
 			new TransactionIntegration(),
 		];
