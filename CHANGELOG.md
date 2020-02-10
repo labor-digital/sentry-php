@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.3](https://bitbucket.org/labor-digital/labor-library-sentry-php/branches/compare/v1.3.3%0Dv1.3.2#diff) (2020-02-10)
+
+
+### Bug Fixes
+
+* remove vendor directory from git ([894870e](https://bitbucket.org/labor-digital/labor-library-sentry-php/commits/894870e))
+
+
+
 ## [1.3.2](https://bitbucket.org/labor-digital/labor-library-sentry-php/branches/compare/v1.3.2%0Dv1.3.1#diff) (2020-02-05)
 
 
