@@ -1,6 +1,6 @@
 {
 	"name": "labor-digital/sentry-php",
-	"description": "Sentry.io wrapper and integration in our build pipelines",
+	"description": "Sentry.io PHP wrapper with easy integration in build pipelines",
 	"homepage": "https://www.labor.digital",
 	"type": "composer-plugin",
 	"license": "Apache-2.0",
