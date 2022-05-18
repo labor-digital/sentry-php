@@ -23,6 +23,7 @@ namespace LaborDigital\Sentry;
 use Sentry\Breadcrumb;
 use Sentry\Event;
 use Sentry\EventHint;
+use Sentry\EventId;
 use Sentry\Integration\EnvironmentIntegration;
 use Sentry\Integration\FrameContextifierIntegration;
 use Sentry\Integration\RequestIntegration;
@@ -65,6 +66,8 @@ class Sentry
     protected static $sentryConfig = [];
     
     /**
+     * Contains the hub instance provided, before the SentrySdk was initialized
+     *
      * @var HubInterface|null
      */
     protected static $sentryHub;
@@ -76,13 +79,13 @@ class Sentry
      * @param   Severity|null   $level    The severity level of the message
      * @param   EventHint|null  $hint     Object that can contain additional information about the event
      *
-     * @return string|null
+     * @return \Sentry\EventId|null
      */
     public static function captureMessage(
         string $message,
         ?Severity $level = null,
         ?EventHint $hint = null
-    ): ?string
+    ): ?EventId
     {
         if (! static::isActivated()) {
             return null;
@@ -97,9 +100,9 @@ class Sentry
      * @param   \Throwable      $exception  The exception
      * @param   EventHint|null  $hint       Object that can contain additional information about the event
      *
-     * @return string|null
+     * @return \Sentry\EventId|null
      */
-    public static function captureException(\Throwable $exception, ?EventHint $hint = null): ?string
+    public static function captureException(\Throwable $exception, ?EventHint $hint = null): ?EventId
     {
         if (! static::isActivated()) {
             return null;
@@ -115,10 +118,9 @@ class Sentry
      *                                    prepared event object
      * @param   EventHint|null  $hint     May contain additional information about the event
      *
-     * @return string|null
-     * @throws \JsonException
+     * @return \Sentry\EventId|null
      */
-    public static function captureEvent($payload, ?EventHint $hint = null): ?string
+    public static function captureEvent($payload, ?EventHint $hint = null): ?EventId
     {
         if (! static::isActivated()) {
             return null;
@@ -145,7 +147,7 @@ class Sentry
      *
      * @param   EventHint|null  $hint  Object that can contain additional information about the event
      */
-    public static function captureLastError(?EventHint $hint = null): ?string
+    public static function captureLastError(?EventHint $hint = null): ?EventId
     {
         if (! static::isActivated()) {
             return null;
@@ -192,17 +194,16 @@ class Sentry
      * is automatically removed once the operation finishes or throws.
      *
      * @param   callable  $callback  The callback to be executed
+     *
+     * @return mixed|void
      */
-    public static function withScope(callable $callback): void
+    public static function withScope(callable $callback)
     {
         if (! static::isActivated()) {
-            // Run with dummy scope
-            $callback(new Scope());
-            
-            return;
+            return $callback(new Scope());
         }
         
-        SentrySdk::getCurrentHub()->withScope($callback);
+        return SentrySdk::getCurrentHub()->withScope($callback);
     }
     
     /**
