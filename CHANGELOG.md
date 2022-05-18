@@ -1,7 +1,13 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for
-commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [2.0.1](https://github.com/labor-digital/sentry-php/compare/v2.0.0...v2.0.1) (2022-05-03)
+
+
+### Bug Fixes
+
+* allow usage with composer v1 ([109b998](https://github.com/labor-digital/sentry-php/commit/109b998d220e915cc9086b0909924b52ffdbd4af))
 
 ## 2.0.0 (2022-05-03)
 
