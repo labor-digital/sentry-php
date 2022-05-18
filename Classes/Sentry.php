@@ -130,7 +130,7 @@ class Sentry
             
             if (! is_array($payload)) {
                 $payload = [
-                    'data' => json_encode($payload, JSON_THROW_ON_ERROR),
+                    'data' => json_encode($payload, defined('JSON_THROW_ON_ERROR') ? JSON_THROW_ON_ERROR : 0),
                 ];
             }
             
@@ -345,7 +345,8 @@ class Sentry
             $autoConfig = file_get_contents($configFilePath);
             
             if (is_string($autoConfig)) {
-                $autoConfig = json_decode($autoConfig, true, 512, JSON_THROW_ON_ERROR);
+                $autoConfig = json_decode($autoConfig, true, 512,
+                    defined('JSON_THROW_ON_ERROR') ? JSON_THROW_ON_ERROR : 0);
             }
             
             if (! is_array($autoConfig)) {
