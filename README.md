@@ -1,5 +1,7 @@
 # LABOR - Sentry.io wrapper
 
+**Warning! This is the legacy version for PHP 7.0!**
+
 This package is a wrapper for the sentry.io.
 
 It will also provide support for our [sentry-release pipeline](https://github.com/labor-digital/bitbucket-pipeline-images#sentry-release) script to
@@ -7,8 +9,8 @@ automatically. It will inherit all required information, like the dsn or the rel
 
 ## Requirements
 
-- PHP 7.3+
-- Composer v1 or v2 should work
+- PHP 7.0
+- Composer v1
 
 ## Installation
 
@@ -33,18 +35,12 @@ the [sentry-release pipeline](https://github.com/labor-digital/bitbucket-pipelin
 
 - Sentry::captureMessage() | Captures a generic message and sends it to Sentry.
 - Sentry::captureException() | Captures an exception event and sends it to Sentry.
-- Sentry::captureEvent() | Captures a generic event using the provided data.
 - Sentry::captureLastError() | Logs the most recent error (obtained with error_get_last).
-- Sentry::addBreadcrumb() | Records a new breadcrumb which will be attached to future events.
-- Sentry::configureScope() | Calls the given callback passing to it the current scope so that any operation can be run within its context.
-- Sentry::withScope() | Creates a new scope with and executes the given operation within.
 - Sentry::manualActivation() | Manually activates the sentry logging, if it was not auto-enabled through the environment variables
 - Sentry::setSentryConfig() | Either for manual configuration, or to enhance the auto-config provided by the pipeline integration
 - Sentry::registerGlobalHandler() | Registers a global error and exception handler that is used to catch all not-cached exceptions
 - Sentry::restoreGlobalHandler() | Restores the global error and exception handlers
 - Sentry::isActivated() | Checks if the sentry logging is activated, by validating if the class was correctly initialized
-- Sentry::setHub() | Sets the sentry hub, used to transport the messages
-- Sentry::getHub() | Returns the sentry hub, used to transport messages or null if logging is not activated
 
 ### Global errors
 

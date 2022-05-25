@@ -31,21 +31,21 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         ];
     }
     
-    public function activate(Composer $composer, IOInterface $io): void
+    public function activate(Composer $composer, IOInterface $io)
     {
         $this->composer = $composer;
         $this->io = $io;
     }
     
-    public function deactivate(Composer $composer, IOInterface $io): void
+    public function deactivate(Composer $composer, IOInterface $io)
     {
     }
     
-    public function uninstall(Composer $composer, IOInterface $io): void
+    public function uninstall(Composer $composer, IOInterface $io)
     {
     }
     
-    public function run(): void
+    public function run()
     {
         // Check if we already have a sentry config file
         $configTargetPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config.json';

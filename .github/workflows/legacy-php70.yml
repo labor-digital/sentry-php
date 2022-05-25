@@ -1,0 +1,23 @@
+name: Create new Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - legacy-php70
+    paths-ignore:
+      - 'composer.json'
+      - 'package.json'
+      - 'CHANGELOG.md'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        uses: actions/checkout@v1
+      -
+        name: Create Changelog and bump release version
+        uses: labor-digital/conventional-release-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          preRelease: legacy-php70

@@ -20,19 +20,7 @@ declare(strict_types=1);
 
 namespace LaborDigital\Sentry;
 
-use Sentry\Breadcrumb;
-use Sentry\Event;
-use Sentry\EventHint;
-use Sentry\EventId;
-use Sentry\Integration\EnvironmentIntegration;
-use Sentry\Integration\FrameContextifierIntegration;
-use Sentry\Integration\RequestIntegration;
-use Sentry\Integration\TransactionIntegration;
-use Sentry\SentrySdk;
-use Sentry\Severity;
-use Sentry\State\HubInterface;
-use Sentry\State\Scope;
-use function Sentry\init;
+use Raven_Client;
 
 class Sentry
 {
@@ -66,144 +54,67 @@ class Sentry
     protected static $sentryConfig = [];
     
     /**
-     * Contains the hub instance provided, before the SentrySdk was initialized
-     *
-     * @var HubInterface|null
+     * @var \Raven_Client
      */
-    protected static $sentryHub;
+    protected static $client;
     
     /**
      * Captures a generic message event and sends it to Sentry.
      *
-     * @param   string          $message  The message
-     * @param   Severity|null   $level    The severity level of the message
-     * @param   EventHint|null  $hint     Object that can contain additional information about the event
+     * @param   string      $message  The message (primary description) for the event.
+     * @param   array       $params   params to use when formatting the message.
+     * @param   array       $data     Additional attributes to pass with this event (see Sentry docs).
+     * @param   bool|array  $stack
+     * @param   mixed       $vars
      *
-     * @return \Sentry\EventId|null
+     * @return string|null
      */
     public static function captureMessage(
         string $message,
-        ?Severity $level = null,
-        ?EventHint $hint = null
-    ): ?EventId
+        $params = [],
+        $data = [],
+        $stack = false,
+        $vars = null
+    )
     {
         if (! static::isActivated()) {
             return null;
         }
         
-        return SentrySdk::getCurrentHub()->captureMessage($message, $level, $hint);
+        return static::$client->captureMessage($message, $params, $data, $stack, $vars);
     }
     
     /**
      * Captures an exception event and sends it to Sentry.
      *
-     * @param   \Throwable      $exception  The exception
-     * @param   EventHint|null  $hint       Object that can contain additional information about the event
+     * @param   \Throwable|\Exception  $exception  The Throwable/Exception object.
+     * @param   array                  $data       Additional attributes to pass with this event (see Sentry docs).
+     * @param   mixed                  $logger
+     * @param   mixed                  $vars
      *
-     * @return \Sentry\EventId|null
+     * @return string|null
      */
-    public static function captureException(\Throwable $exception, ?EventHint $hint = null): ?EventId
+    public static function captureException($exception, $data = null, $logger = null, $vars = null)
     {
         if (! static::isActivated()) {
             return null;
         }
         
-        return SentrySdk::getCurrentHub()->captureException($exception, $hint);
-    }
-    
-    /**
-     * Captures a new event using the provided data.
-     *
-     * @param   array|Event     $payload  The data of the event being captured, or a already
-     *                                    prepared event object
-     * @param   EventHint|null  $hint     May contain additional information about the event
-     *
-     * @return \Sentry\EventId|null
-     */
-    public static function captureEvent($payload, ?EventHint $hint = null): ?EventId
-    {
-        if (! static::isActivated()) {
-            return null;
-        }
-        
-        $event = $payload;
-        if (! $event instanceof Event) {
-            $event = Event::createEvent();
-            
-            if (! is_array($payload)) {
-                $payload = [
-                    'data' => json_encode($payload, defined('JSON_THROW_ON_ERROR') ? JSON_THROW_ON_ERROR : 0),
-                ];
-            }
-            
-            $event->setExtra($payload);
-        }
-        
-        return SentrySdk::getCurrentHub()->captureEvent($event, $hint);
+        return static::$client->captureException($exception, $data, $logger, $vars);
     }
     
     /**
      * Logs the most recent error (obtained with {@link error_get_last}).
      *
-     * @param   EventHint|null  $hint  Object that can contain additional information about the event
+     * @return string|null
      */
-    public static function captureLastError(?EventHint $hint = null): ?EventId
+    public static function captureLastError()
     {
         if (! static::isActivated()) {
             return null;
         }
         
-        return SentrySdk::getCurrentHub()->captureLastError($hint);
-    }
-    
-    /**
-     * Records a new breadcrumb which will be attached to future events. They
-     * will be added to subsequent events to provide more context on user's
-     * actions prior to an error or crash.
-     *
-     * @param   Breadcrumb  $breadcrumb  The breadcrumb to record
-     *
-     * @return bool Whether the breadcrumb was actually added to the current scope
-     */
-    public static function addBreadcrumb(Breadcrumb $breadcrumb): bool
-    {
-        if (! static::isActivated()) {
-            return false;
-        }
-        
-        return SentrySdk::getCurrentHub()->addBreadcrumb($breadcrumb);
-    }
-    
-    /**
-     * Calls the given callback passing to it the current scope so that any
-     * operation can be run within its context.
-     *
-     * @param   callable  $callback  The callback to be executed
-     */
-    public static function configureScope(callable $callback): void
-    {
-        if (! static::isActivated()) {
-            return;
-        }
-        
-        SentrySdk::getCurrentHub()->configureScope($callback);
-    }
-    
-    /**
-     * Creates a new scope with and executes the given operation within. The scope
-     * is automatically removed once the operation finishes or throws.
-     *
-     * @param   callable  $callback  The callback to be executed
-     *
-     * @return mixed|void
-     */
-    public static function withScope(callable $callback)
-    {
-        if (! static::isActivated()) {
-            return $callback(new Scope());
-        }
-        
-        return SentrySdk::getCurrentHub()->withScope($callback);
+        return static::$client->captureLastError();
     }
     
     /**
@@ -215,7 +126,7 @@ class Sentry
      *
      * @param   bool  $state
      */
-    public static function manualActivation(bool $state = true): void
+    public static function manualActivation(bool $state = true)
     {
         static::$manualActiveState = $state;
     }
@@ -227,7 +138,7 @@ class Sentry
      *
      * @param   array  $config
      */
-    public static function setSentryConfig(array $config): void
+    public static function setSentryConfig(array $config)
     {
         static::$sentryConfig = $config;
     }
@@ -235,7 +146,7 @@ class Sentry
     /**
      * Registers a global error and exception handler that is used to catch all not-cached exceptions
      */
-    public static function registerGlobalHandler(): void
+    public static function registerGlobalHandler()
     {
         if (! static::isActivated()) {
             return;
@@ -255,7 +166,7 @@ class Sentry
     /**
      * Restores the global error and exception handlers
      */
-    public static function restoreGlobalHandler(): void
+    public static function restoreGlobalHandler()
     {
         if (! static::isActivated()) {
             return;
@@ -295,45 +206,13 @@ class Sentry
     }
     
     /**
-     * Sets the sentry hub, used to transport the messages
-     *
-     * @param   \Sentry\State\HubInterface  $hub
-     *
-     * @return \Sentry\State\HubInterface
-     */
-    public static function setHub(HubInterface $hub): HubInterface
-    {
-        if (! static::isActivated()) {
-            static::$sentryHub = $hub;
-            
-            return $hub;
-        }
-        
-        return SentrySdk::setCurrentHub($hub);
-    }
-    
-    /**
-     * Returns the sentry hub, used to transport messages or null if logging is not activated
-     *
-     * @return \Sentry\State\HubInterface|null
-     */
-    public static function getHub(): ?HubInterface
-    {
-        if (! static::isActivated()) {
-            return static::$sentryHub;
-        }
-        
-        return SentrySdk::getCurrentHub();
-    }
-    
-    /**
      * Internal helper that is used to initialize the sentry client based on the configuration
      * we got from setSentryConfig() and the possible auto config file at config.json
      *
      * @return void
      * @throws \JsonException
      */
-    protected static function initialize(): void
+    protected static function initialize()
     {
         if (static::$isInitialized) {
             return;
@@ -370,28 +249,7 @@ class Sentry
             return;
         }
         
-        // Disable default integrations
-        // Otherwise the global error handler will automatically be added to sentry
-        if (! isset($config['default_integrations'])) {
-            $config['default_integrations'] = false;
-        }
-        
-        if (! isset($config['integrations'])) {
-            $config['integrations'] = [
-                new RequestIntegration(),
-                new TransactionIntegration(),
-                new FrameContextifierIntegration(),
-                new EnvironmentIntegration(),
-            ];
-        }
-        
-        // Initialize sentry
-        init($config);
+        static::$client = new Raven_Client($config);
         static::$isInitialized = true;
-        
-        if (static::$sentryHub) {
-            SentrySdk::setCurrentHub(static::$sentryHub);
-            static::$sentryHub = null;
-        }
     }
 }

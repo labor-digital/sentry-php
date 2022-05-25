@@ -21,16 +21,18 @@
 	"autoload": {
 		"psr-4": {
 			"LaborDigital\\Sentry\\": "Classes"
+		},
+		"psr-0": {
+			"Raven_": "lib/sentry/lib"
 		}
 	},
 	"require": {
-		"composer-plugin-api": "^1.0 || ^2.0",
-		"sentry/sdk": "^3.1.1"
+		"composer-plugin-api": "^1.1.0"
 	},
 	"require-dev": {
-		"composer/composer": "^2.1"
+		"composer/composer": "^1"
 	},
-	"version": "2.0.2",
+	"version": "0.0.1",
 	"extra": {
 		"class": "LaborDigital\\Sentry\\Composer\\Plugin"
 	}
