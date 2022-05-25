@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3-legacy-php70.3](https://github.com/labor-digital/sentry-php/compare/v2.0.3-legacy-php70.2...v2.0.3-legacy-php70.3) (2022-05-25)
+
+
+### Bug Fixes
+
+* disable ssl verification ([4d7b9f5](https://github.com/labor-digital/sentry-php/commit/4d7b9f57cfdfc391d88c3083282182489c0919d8))
+
 ### [2.0.3-legacy-php70.2](https://github.com/labor-digital/sentry-php/compare/v2.0.3-legacy-php70.1...v2.0.3-legacy-php70.2) (2022-05-25)
 
 
