@@ -281,7 +281,7 @@ class Sentry
                 = getenv('PROJECT_ENV') === 'prod' || ! empty(getenv('SENTRY_ACTIVE'));
         }
         
-        if (! static::$dynamicActivityState) {
+        if (! static::$manualActiveState && ! static::$dynamicActivityState) {
             return false;
         }
         
