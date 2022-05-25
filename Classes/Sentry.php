@@ -249,6 +249,9 @@ class Sentry
             return;
         }
         
+        // The old ssl certificate provided by sentry is no longer valid, so we must disable the validation here
+        $config['verify_ssl'] = false;
+        
         static::$client = new Raven_Client($config);
         static::$isInitialized = true;
     }
