@@ -32,7 +32,7 @@
 	"require-dev": {
 		"composer/composer": "^1"
 	},
-	"version": "2.0.3-legacy-php70.0",
+	"version": "2.0.3-legacy-php70.1",
 	"extra": {
 		"class": "LaborDigital\\Sentry\\Composer\\Plugin"
 	}

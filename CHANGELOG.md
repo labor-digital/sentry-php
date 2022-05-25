@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3-legacy-php70.1](https://github.com/labor-digital/sentry-php/compare/v2.0.3-legacy-php70.0...v2.0.3-legacy-php70.1) (2022-05-25)
+
+
+### Bug Fixes
+
+* allow usage of composer 2 ([3d909e6](https://github.com/labor-digital/sentry-php/commit/3d909e61c6fca261bd1b4cd45a7612dafb7cd282))
+
 ### [2.0.3-legacy-php70.0](https://github.com/labor-digital/sentry-php/compare/v2.0.2...v2.0.3-legacy-php70.0) (2022-05-25)
 
 
