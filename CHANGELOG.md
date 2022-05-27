@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.5](https://github.com/labor-digital/sentry-php/compare/v2.0.4...v2.0.5) (2022-05-27)
+
+
+### Bug Fixes
+
+* require composer runtime api ([f0b61d2](https://github.com/labor-digital/sentry-php/commit/f0b61d2c90f94721e36622ec0b93a23d0be9d4e4))
+
 ### [2.0.4](https://github.com/labor-digital/sentry-php/compare/v2.0.3...v2.0.4) (2022-05-25)
 
 
